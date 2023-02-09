@@ -2,15 +2,18 @@
 #include <iomanip>
 #include <iostream>
 #include "book.h"
+#include "util.h"
 
 using namespace std;
 
-Book::Book(const std::string category, const std::string name, double price, int qty, const std::string i, const std::string a)
-  :  Product(category, name, price, qty), isbn_(i) , author_(a)
+Book::Book(const std::string name, double price, int qty, const std::string i, const std::string a)
+  :  Product("book", name, price, qty), isbn_(i) , author_(a)
 {
+    keywords_=parseStringToWords(getName());
+    std::set<std::string> tempSet;
+    tempSet=parseStringToWords(author_);
+    keywords_.insert(tempSet.begin(),tempSet.end());
     keywords_.insert(isbn_);
-    keywords_.insert(parseStringToWords(getName()));
-    keywords_.insert(parseStringToWords(author_));
 }
 
 

@@ -18,20 +18,44 @@ std::set<std::string> parseStringToWords(string rawWords)
     std::set<std::string> set;
     string temp;
     //idexes of start and end for words in the rawWords
-    int startIndex = 0;
+    int startIndex;
     int endIndex;
 
     for(size_t x=0; x<rawWords.length(); x++)
     {
-        if(!isalpha(rawWords[x]))
-        {
-            endIndex=x;
+        if(isalpha(rawWords[x]))
+        {     
+            startIndex=x;
+            //cout<<"!!step in: "<<startIndex<<endl;
+            int step = 0;
+            bool foundWord = false;
+            endIndex=0;
+            for(size_t y=x; y<rawWords.length(); y++)
+            {
+              //cout<<"letter it iterates through: "<<rawWords[y]<<endl;
+              if(rawWords[y]==' '||!isalpha(rawWords[y]))
+              {
+                
+                endIndex=y;
+                //cout<<"!!stepout: "<<startIndex<<" "<<endIndex<<endl;
+                foundWord = true;
+              }
+              if(foundWord)
+              {
+                //break out of this loop if word is found
+                y = rawWords.length();
+                foundWord = false;
+              }
+              step++;
+            }
+            x+=step-1;
             if(endIndex-startIndex>=2)
             {
-                set.insert(convToLower(rawWords.substr(startIndex,endIndex)));
+                set.insert(convToLower(rawWords.substr(startIndex,endIndex-startIndex)));
             }
-            startIndex=x+1;
+            
         }
+
     }
     // temp = rtrim(rawWords);
     // set.insert(temp);
