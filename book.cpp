@@ -16,13 +16,22 @@ Book::Book(const std::string name, double price, int qty, const std::string i, c
     keywords_.insert(isbn_);
 }
 
+Book::~Book()
+{
+
+}
 
 std::set<std::string> Book::keywords() const
 {
     return keywords_;
 }
 
-std::string Book::displayString()
+bool Book::isMatch(std::vector<std::string>& searchTerms) const
+{
+    return false;
+}
+
+std::string Book::displayString() const
 {
     std::string s = "";
     s+=getName();
@@ -41,7 +50,7 @@ std::string Book::displayString()
     cout<<getPrice()<<" "<<getQty()<<" left."<<endl;
     return s;
 }
-void Book::dump(std::ostream& os)
+void Book::dump(std::ostream& os) const
 {
     os << "book" << "\n" << getName() << "\n" << getPrice() << "\n" << getQty() << "\n" << isbn_ << "\n" << author_ << endl;
 }

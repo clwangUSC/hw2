@@ -15,13 +15,23 @@ Clothing::Clothing(const std::string name, double price, int qty, const std::str
     keywords_.insert(tempSet.begin(),tempSet.end());
 }
 
+Clothing::~Clothing()
+{
+
+}
+
 
 std::set<std::string> Clothing::keywords() const
 {
     return keywords_;
 }
 
-std::string Clothing::displayString()
+bool Clothing::isMatch(std::vector<std::string>& searchTerms) const
+{
+    return false;
+}
+
+std::string Clothing::displayString() const
 {
     std::string s = "";
     s+=getName();
@@ -40,7 +50,7 @@ std::string Clothing::displayString()
     cout<<getPrice()<<" "<<getQty()<<" left."<<endl;
     return s;
 }
-void Clothing::dump(std::ostream& os)
+void Clothing::dump(std::ostream& os) const
 {
-    os << "book" << "\n" << getName() << "\n" << getPrice() << "\n" << getQty() << "\n" << size_ << "\n" << brand_ << endl;
+    os << "clothing" << "\n" << getName() << "\n" << getPrice() << "\n" << getQty() << "\n" << size_ << "\n" << brand_ << endl;
 }

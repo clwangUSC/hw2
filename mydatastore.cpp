@@ -16,7 +16,14 @@ MyDataStore::MyDataStore()
 }
 MyDataStore::~MyDataStore()
 {
-
+    for(set<Product*>::iterator it = products_.begin(); it!=products_.end(); ++it)
+    {
+        delete *it;
+    }
+    for(map<string, User*>::iterator it = users_.begin(); it!=users_.end(); ++it)
+    {
+        delete (it->second);
+    }
 }
 void MyDataStore::addProduct(Product* p)
 {  
@@ -120,15 +127,22 @@ void MyDataStore::buyCart(User* u)
 {
     //map<User*,vector<Product*>>::iterator it = carts_.find(u);
     vector<Product*> cart = (carts_.find(u))->second;
+    vector<Product*> notRemoved;
 
     for(size_t x=0; x<cart.size(); ++x)
     {
-        if(cart[x]->getQty()>0&&(u->getBalance()>=cart[x]->getPrice()))
+        if(cart[x]->getQty() > 0&&(u->getBalance()>=cart[x]->getPrice()))
         {
             cart[x]->subtractQty(1);
             u->deductAmount(cart[x]->getPrice());        
         }
+        else
+        {
+            notRemoved.push_back(cart[x]);
+        }
     }
+
+    cart = notRemoved;
 }
 
 User* MyDataStore::returnUser(std::string un)

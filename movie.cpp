@@ -13,13 +13,22 @@ Movie::Movie(const std::string name, double price, int qty, const std::string ge
     keywords_.insert(genre_);
 }
 
+Movie::~Movie()
+{
+
+}
 
 std::set<std::string> Movie::keywords() const
 {
     return keywords_;
 }
 
-std::string Movie::displayString()
+bool Movie::isMatch(std::vector<std::string>& searchTerms) const
+{
+    return false;
+}
+
+std::string Movie::displayString() const
 {
     std::string s = "";
     s+=getName();
@@ -38,7 +47,7 @@ std::string Movie::displayString()
     cout<<getPrice()<<" "<<getQty()<<" left."<<endl;
     return s;
 }
-void Movie::dump(std::ostream& os)
+void Movie::dump(std::ostream& os) const
 {
     os << "movie" << "\n" << getName() << "\n" << getPrice() << "\n" << getQty() << "\n" << genre_ << "\n" << rating_ << endl;
 }

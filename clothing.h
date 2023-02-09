@@ -13,8 +13,9 @@ public:
     ~Clothing();
 
     std::set<std::string> keywords() const;
-    std::string displayString();
-    void dump(std::ostream& os);
+    std::string displayString() const;
+    bool isMatch(std::vector<std::string>& searchTerms) const;
+    void dump(std::ostream& os) const;
 private:
     std::string size_;
     std::string brand_;
