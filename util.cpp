@@ -39,6 +39,9 @@ std::set<std::string> parseStringToWords(string rawWords)
                 endIndex=y;
                 //cout<<"!!stepout: "<<startIndex<<" "<<endIndex<<endl;
                 foundWord = true;
+              } else if(y==rawWords.length()-1)
+              {
+                endIndex=y+1;
               }
               if(foundWord)
               {
@@ -91,3 +94,19 @@ std::string &rtrim(std::string &s) {
 std::string &trim(std::string &s) {
     return ltrim(rtrim(s));
 }
+
+// int main(int argc, char* argv[])
+// {
+//   string s;
+//   set<string> spl;
+//   s = "Men's Fitted Sh";
+//   spl = parseStringToWords(s);
+//   cout<<"begin"<<endl;
+//   for(set<string>::iterator it=spl.begin(); it!=spl.end(); it++)
+//   {
+//     cout<<*it<<endl;
+//   }
+//   cout<<"end"<<endl;
+
+  
+// }

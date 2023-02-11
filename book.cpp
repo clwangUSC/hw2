@@ -33,21 +33,27 @@ bool Book::isMatch(std::vector<std::string>& searchTerms) const
 
 std::string Book::displayString() const
 {
+    stringstream ss; 
+    ss << fixed << setprecision(2) << getPrice();   
+    string p;
+    ss >> p;
+    
     std::string s = "";
     s+=getName();
     s+="\n";
-    cout<<getName()<<endl;
+    //cout<<getName()<<endl;
     s+="Author: ";
     s+=author_;
     s+=" ISBN: ";
     s+=isbn_;
     s+="\n";
-    cout<<"Author: "<<author_<<" ISBN: "<<isbn_<<endl;
-    s+=getPrice();
-    s+=" ";
-    s+=getQty();
+    //cout<<"Author: "<<author_<<" ISBN: "<<isbn_<<endl;
+    s+=p;
+    //s+=to_string(getPrice());
+    s+="  ";
+    s+=to_string(getQty());
     s+=" left.";
-    cout<<getPrice()<<" "<<getQty()<<" left."<<endl;
+    //cout<<getPrice()<<" "<<getQty()<<" left."<<endl;
     return s;
 }
 void Book::dump(std::ostream& os) const

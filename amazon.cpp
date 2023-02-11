@@ -63,6 +63,7 @@ int main(int argc, char* argv[])
     cout << "====================================" << endl;
 
     vector<Product*> hits;
+
     bool done = false;
     while(!done) {
         cout << "\nEnter command: " << endl;
@@ -74,34 +75,48 @@ int main(int argc, char* argv[])
             if( cmd == "AND") {
                 string term;
                 vector<string> terms;
+                hits.clear();
                 while(ss >> term) {
                     term = convToLower(term);
                     terms.push_back(term);
                 }
+                
                 hits = ds.search(terms, 0);
                 displayProducts(hits);
+
+                //ds.debug();
             }
             else if ( cmd == "OR" ) {
                 string term;
                 vector<string> terms;
+                hits.clear();
                 while(ss >> term) {
                     term = convToLower(term);
                     terms.push_back(term);
                 }
                 hits = ds.search(terms, 1);
                 displayProducts(hits);
+
+                //ds.debug();
             }
             else if ( cmd == "ADD" ) {
                 string username;
-                int x;
+                size_t x;
                 if(ss>>username)
                 {
                   if(ss>>x)
                   {
                       username = convToLower(username);
                       User* user = ds.returnUser(username);
+                      if(user!=NULL&&user!=nullptr&& x<=hits.size() &&x>0)
+                      {
 
-                      ds.addToCart(user,hits[x]); 
+                            ds.addToCart(user,hits[x-1]);
+                      }
+                      else
+                      {
+                            cout<<"Invalid request"<<endl;
+                      }
 
                   }
                   else
@@ -121,7 +136,15 @@ int main(int argc, char* argv[])
                     username = convToLower(username);
                     User* user = ds.returnUser(username);
 
-                    ds.displayCart(user);
+                    if(user!=nullptr)
+                    {
+
+                        ds.displayCart(user);
+                    }
+                    else
+                    {
+                        cout<<"Invalid username"<<endl;
+                    }
                 }
                 else
                 {
@@ -135,7 +158,14 @@ int main(int argc, char* argv[])
                     username = convToLower(username);
                     User* user = ds.returnUser(username);
 
-                    ds.buyCart(user);
+                    if(user!=nullptr)
+                    {
+                        ds.buyCart(user);
+                    }
+                    else
+                    {
+                        cout<<"Invalid username"<<endl;
+                    }
                 }
                 else
                 {

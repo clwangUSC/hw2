@@ -19,6 +19,8 @@ public:
     void displayCart(User* u);
     void buyCart(User* u);
     User* returnUser(std::string un);
+
+    void debug();
 private:
     std::map<std::string , User*> users_;
     std::set<Product*> products_;

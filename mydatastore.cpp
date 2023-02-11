@@ -3,6 +3,7 @@
 using namespace std;
 MyDataStore::MyDataStore()
 {
+
     // ifstream file;
     // file.open("database.txt");
     // DBParser p;
@@ -27,6 +28,7 @@ MyDataStore::~MyDataStore()
 }
 void MyDataStore::addProduct(Product* p)
 {  
+
     products_.insert(p);
     std::set<string> words = p->keywords();
 
@@ -53,35 +55,63 @@ void MyDataStore::addProduct(Product* p)
 }
 void MyDataStore::addUser(User* u)
 {
+    std::vector<Product*> pairing;
     users_.insert(pair<string,User*>(u->getName(),u));
+    carts_.insert(pair<User*,vector<Product*>>(u,pairing));
+
 }
 std::vector<Product*> MyDataStore::search(std::vector<std::string>& terms, int type)
 {
     set<Product*> temp;
+    vector<Product*> emptySet;
+    //bool first = true;
 
-    temp = keyToProduct_.find(terms[0])->second;
+    // cout<<"all the keywords"<<endl;
+
+    temp = keyToProduct_[convToLower(terms[0])];
 
     if(type==0)
     {
         for(size_t x=1; x<terms.size(); x++)
         {
-            temp = setIntersection(temp,(keyToProduct_.find(terms[x]))->second);
-        }
+            map<string,set<Product*>>::iterator thing = keyToProduct_.find(convToLower(terms[x]));
 
+            if(thing != keyToProduct_.end())
+            {
+                // if(first){
+                //     temp = keyToProduct_[thing->first];
+                //     first =false;
+                // }
+                // else{
+                    temp = setIntersection(temp,keyToProduct_[convToLower(terms[x])]);
+                // }
+            }
+            else
+            {
+                return emptySet;
+            }
+        }
     }
     else if (type ==1)
     {
+        
         for(size_t x=1; x<terms.size(); x++)
         {
-            temp = setUnion(temp,(keyToProduct_.find(terms[x]))->second);
+            map<string,set<Product*>>::iterator thing = keyToProduct_.find(convToLower(terms[x]));
+            if(thing != keyToProduct_.end())
+            {
+                temp = setUnion(temp,(keyToProduct_.find(convToLower(terms[x])))->second);
+            }
         }
     }
 
     vector<Product*>output;
+
     for(set<Product*>::iterator it = temp.begin(); it!= temp.end(); ++it)
     {
         output.push_back(*it);
     }
+
     return output;
     
 }
@@ -119,7 +149,9 @@ void MyDataStore::displayCart(User* u)
     vector<Product*> cart = (carts_.find(u))->second;
     for(size_t x=0; x<cart.size(); ++x)
     {
-        cart[x]->dump(cout);
+        cout<<"Item "<<x+1<<endl;
+        cout<<cart[x]->displayString()<<endl;
+        //cart[x]->dump(cout);
     }
 }
 
@@ -131,21 +163,44 @@ void MyDataStore::buyCart(User* u)
 
     for(size_t x=0; x<cart.size(); ++x)
     {
-        if(cart[x]->getQty() > 0&&(u->getBalance()>=cart[x]->getPrice()))
+        if((cart)[x]->getQty() > 0 && (u->getBalance() >= ((cart)[x]->getPrice())))
         {
-            cart[x]->subtractQty(1);
-            u->deductAmount(cart[x]->getPrice());        
+            (cart)[x]->subtractQty(1);
+            u->deductAmount((cart)[x]->getPrice()); 
+            //cart->pop();  
+
         }
         else
         {
-            notRemoved.push_back(cart[x]);
+            notRemoved.push_back((cart)[x]);
         }
     }
 
-    cart = notRemoved;
+    carts_.find(u)->second = notRemoved;
 }
 
 User* MyDataStore::returnUser(std::string un)
 {
-    return users_.find(un)->second;
+    map<string,User*>::iterator temp = users_.find(convToLower(un));
+    if(temp ==users_.end())
+    {
+        return nullptr;
+    }
+    else
+    {
+        return temp->second;
+    }
+}
+
+void MyDataStore::debug()
+{
+        for(set<Product*>::iterator it=products_.begin(); it!=products_.end(); ++it)
+        {
+        set<std::string> temp = (*it)->keywords();
+        cout<<"PRODUCT!!!!!!! KEYWORDS:!!!"<<endl;
+        for(set<std::string>::iterator m= temp.begin(); m!= temp.end(); ++m)
+        {
+            cout<<*m<<endl;
+        }
+        }
 }

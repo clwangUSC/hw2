@@ -33,21 +33,27 @@ bool Clothing::isMatch(std::vector<std::string>& searchTerms) const
 
 std::string Clothing::displayString() const
 {
+    stringstream ss; 
+    ss << fixed << setprecision(2) << getPrice();   
+    string p;
+    ss >> p;
+
     std::string s = "";
     s+=getName();
     s+="\n";
-    cout<<getName()<<endl;
+    //cout<<getName()<<endl;
     s+="Size: ";
     s+=size_;
     s+=" Brand: ";
     s+=brand_;
     s+="\n";
-    cout<<"Size: "<<size_<<" Brand: "<<brand_<<endl;
-    s+=getPrice();
-    s+=" ";
-    s+=getQty();
+    //cout<<"Size: "<<size_<<" Brand: "<<brand_<<endl;
+    //s+=to_string(getPrice());
+    s+=p;
+    s+="  ";
+    s+=to_string(getQty());
     s+=" left.";
-    cout<<getPrice()<<" "<<getQty()<<" left."<<endl;
+    //cout<<getPrice()<<" "<<getQty()<<" left."<<endl;
     return s;
 }
 void Clothing::dump(std::ostream& os) const
